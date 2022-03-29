@@ -1,27 +1,73 @@
-# Datos normales
-
-
+# Con este tutorial, se espera aprender a manipular y graficar datos en R y describirlos estadisticamente.
+# En particular nos enfocaremos a cuatro temas:
+# 1. Comparar las distribuciones normal y poisson (histogramas, qqplots, y prueba de Shaphiro-Wilk.
+# 2. Tablas de Contingencia y prubas de Chi²
+# 3. Series de tiempo (random walk y periodicas)  
+# 4. Leer y guardar datos en un archivo csv.
+##################################
+#
 # EJEMPLO. 
 # Los hombres mexicanos miden en promedio 1.70 m de altura, sus esposas son 12 cm más bajas y miden sólo 1.57 m. En España los hombres miden 1.76 m y las mujeres 1.62 m.
 # REF. https://www.datosmundial.com/estatura-promedio.php
 
+# 1. COMPARAR LAS DISTRIBUCIONES NORMAL Y POISSON
 # Para 1000 observaciones:
-
-# Generar 1000 datos al azar de una distribución normal 
+# Generar 1000 datos al azar de una distribución normal con distinta varianza (sd) 
 masc_gaussian_sd1 = rnorm(1000, 176, sd = 1)
 masc_gaussian_sd3 = rnorm(1000, 176, sd = 3)
 
+# Generar 1000 datos al azar de una distribución normal con distinta varianza (sd)
 fem_gaussian_sd1 = rnorm(1000, 157, sd = 1)
 fem_gaussian_sd3 = rnorm(1000, 157, sd = 3)
 
-# Datos Poisson (conteos, enteros)
-d_poisson = rpois(1000, 10)
-plot(cumsum(d_poisson))
+# Grafica Historgamas
+par(mfrow=c(2,2))
+hist(masc_gaussian_sd1, col="lightblue")
+hist(masc_gaussian_sd3, col="lightblue")
+hist(fem_gaussian_sd1, col="lightblue")
+hist(fem_gaussian_sd3, col="lightblue")
 
- # Datos binarios
-grupo = sample(c(0,1), 1000, replace = T)
+# Datos Poisson (conteos, enteros con distintas medias)
+d_poisson1 = rpois(1000, 1)
+d_poisson5 = rpois(1000, 5)
+d_poisson10 = rpois(1000, 10)
+d_poisson50 = rpois(1000, 50)
+
+# Grafica Historgamas
+par(mfrow=c(2,2))
+hist(d_poisson1)
+hist(d_poisson5)
+hist(d_poisson10)
+hist(d_poisson50)
+
+# PRUEBAS DE NORMALIDAD
+# Shapiro-wilk tests
+shapiro.test(masc_gaussian_sd3)
+shapiro.test(fem_gaussian_sd3)
+
+shapiro.test(d_poisson1)
+shapiro.test(d_poisson10)
+
+# QQ plots
+qqnorm(masc_gaussian_sd1)
+qqline(masc_gaussian_sd1)
+
+qqnorm(d_poisson1)
+qqline(d_poisson1)
+
+# 2. TABLAS DE CONTINGENCIA. CORRELACIÓN ENTRE CLASES.
+clase_1 = sample(c(0,1), 1000, replace = T)
+clase_2 = sample(c(0,1), 1000, replace = T)
+table(clase_1, clase_2)
+
+# Prueba de X²
+# H0: P_0,0 = P_0,1 = P_1,0 = P_1,1
+chisq.test(table(clase_1, clase_29)
 
 
+# 3. SERIES DE TIEMPO
+
+# Random walk
 # Series de tiempo aleatorias (random walk) centradas a 0 con 3 desviaciones estandar.
 par(mfrow = c(1,2), font.main = 1)
 
@@ -61,30 +107,28 @@ lines(wave.2, col="grey", lty = "dashed")
 lines(wave.3, col="red")
                                                                                          
 wave.4 <- wave.3
-wave.4[wave.3>0.5] <- 0.5
+# Encontrar picos en la onda                                            
+wave.4[wave.3>0.5] <- 0.5 # acotar los datos
 plot(xs,wave.4,type="l",ylim=c(-1.25,1.25)); title("overflowed, non-linear complex wave"); abline(h=0,lty=3)                                              
                                               
 boxplot(wave.1, wave.2, wave.3
        , col=c("transparent", "transparent", "red")
        , ylab = "variación", labels = c("", "", ""))
-                                                                                            
-# Compilar todo en una base de datos en formato csv
-
-DATOS = data.frame(masc_gaussian_sd1, masc_gaussian_sd3, masc_gaussian_sd1, masc_gaussian_sd3, d_poisson, grupo)
-                                              
+                                                                                                               
+# 4. MANIPULACION DE DATOS
+DATOS = data.frame(masc_gaussian_sd1, masc_gaussian_sd3, masc_gaussian_sd1, masc_gaussian_sd3, d_poisson, clase_1, clase_2)
 head(DATOS)
 
-# Seleccionar los datos con grupo = 1
-                                              
-DATOS[grep(1, DATOS$grupo),]
-DATOS[DATOS$grupo==1,]
+# Seleccionar los datos con grupo = 1                                              
+DATOS[grep(1, DATOS$clase_1),]
+DATOS[DATOS$clase_1==1,]
                                               
 # Resumen descriptivo                                              
-summary(DATOS[DATOS$grupo==1,])                       
-summary(DATOS[DATOS$grupo==0,])
+summary(DATOS[DATOS$clase_1==1,])                       
+summary(DATOS[DATOS$clase_1==0,])
 par(mfrow = c(1,2))                                              
-plot(DATOS[DATOS$grupo==1,])
-plot(DATOS[DATOS$grupo==0,])
+plot(DATOS[DATOS$clase_1==1,])
+plot(DATOS[DATOS$clase_1==0,])
                                               
 # GUARDAR LOS DATOS EN csv
 write.csv(DATOS, "datos.csv")
