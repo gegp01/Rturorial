@@ -44,21 +44,6 @@ hist(d_poisson5)
 hist(d_poisson10)
 hist(d_poisson50)
 
-
-decil <- as.integer(cut(masc_gaussian_sd1, quantile(masc_gaussian_sd1, probs=0:10/10), include.lowest=TRUE))
-barplot(table(decil))
-
-
-plot(decil, masc_gaussian_sd1)
-
-# PRUEBAS DE NORMALIDAD
-# Shapiro-wilk tests
-shapiro.test(masc_gaussian_sd3)
-shapiro.test(fem_gaussian_sd3)
-
-shapiro.test(d_poisson1)
-shapiro.test(d_poisson10)
-
 # QQ plots
 # Quantiles. Es una forma de clasificar los datos en proporciones iguales.
 
@@ -72,15 +57,27 @@ qqline(masc_gaussian_sd1)
 qqnorm(d_poisson1)
 qqline(d_poisson1)
 
+#  decil <- as.integer(cut(masc_gaussian_sd1, quantile(masc_gaussian_sd1, probs=0:10/10), include.lowest=TRUE))
+# barplot(table(decil))
+# plot(decil, masc_gaussian_sd1)
+
+# PRUEBAS DE NORMALIDAD
+# Shapiro-wilk tests
+shapiro.test(masc_gaussian_sd3)
+shapiro.test(fem_gaussian_sd3)
+
+shapiro.test(d_poisson1)
+shapiro.test(d_poisson10)
+
 # 2. TABLAS DE CONTINGENCIA. CORRELACIÓN ENTRE CLASES.
 clase_1 = sample(c(0,1), 1000, replace = T)
 clase_2 = sample(c(0,1), 1000, replace = T)
-table(clase_1, clase_2)
 
-# Prueba de X²
-# H0: P_0,0 = P_0,1 = P_1,0 = P_1,1
-chisq.test(table(clase_1, clase_29)
-
+# Observados
+X = table(clase_1, clase_2)
+CHI = chisq.test(table(clase_1, clase_2)
+CHI
+CHI$expected
 
 # 3. SERIES DE TIEMPO
 
@@ -107,6 +104,8 @@ points(z5, col="red")
 z6 = cumsum(rnorm(1000, 0, sd = 1))
 lines(z6, col="blue")
 
+
+                 
 # Series de tiempo periodicas
 xs <- seq(-2*pi,2*pi,pi/100)
 wave.1 <- sin(3*xs)
