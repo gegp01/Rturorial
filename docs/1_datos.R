@@ -44,37 +44,55 @@ points(z5, col="red")
 z6 = cumsum(rnorm(1000, 0, sd = 1))
 lines(z6, col="blue")
 
+# Series de tiempo periodicas
+xs <- seq(-2*pi,2*pi,pi/100)
+wave.1 <- sin(3*xs)
+wave.2 <- sin(10*xs)
 
+par(mfrow = c(1, 2))
+plot(xs,wave.1,type="l",ylim=c(-1,1)); abline(h=0,lty=3)
+plot(xs,wave.2,type="l",ylim=c(-1,1)); abline(h=0,lty=3
 
+wave.3 <- 0.5 * wave.1 + 0.25 * wave.2
+plot(xs,wave.3,type="l"); title("Eg complex wave"); abline(h=0,lty=3)
 
-
-
-
-
+plot(wave.1, type="l", col="darkslategrey")
+lines(wave.2, col="grey", lty = "dashed")
+lines(wave.3, col="red")
+                                                                                         
+wave.4 <- wave.3
+wave.4[wave.3>0.5] <- 0.5
+plot(xs,wave.4,type="l",ylim=c(-1.25,1.25)); title("overflowed, non-linear complex wave"); abline(h=0,lty=3)                                              
+                                              
+boxplot(wave.1, wave.2, wave.3
+       , col=c("transparent", "transparent", "red")
+       , ylab = "variación", labels = c("", "", ""))
+                                                                                            
 # Compilar todo en una base de datos en formato csv
 
+DATOS = data.frame(masc_gaussian_sd1, masc_gaussian_sd3, masc_gaussian_sd1, masc_gaussian_sd3, d_poisson, grupo)
+                                              
+head(DATOS)
 
-
-
-
-
-
-# Series de tiempo
-sigmoid = function(x) {
-   1 / (1 + exp(-x))
-}
-
-
-x <- seq(-5, 5, 0.01)
-
-
-# Graficas. Histograma.
-hist()
-qqnorm()
-plot(
-
-# Pruebas de normalidad
-
+# Seleccionar los datos con grupo = 1
+                                              
+DATOS[grep(1, DATOS$grupo),]
+DATOS[DATOS$grupo==1,]
+                                              
+# Resumen descriptivo                                              
+summary(DATOS[DATOS$grupo==1,])                       
+summary(DATOS[DATOS$grupo==0,])
+par(mfrow = c(1,2))                                              
+plot(DATOS[DATOS$grupo==1,])
+plot(DATOS[DATOS$grupo==0,])
+                                              
+# GUARDAR LOS DATOS EN csv
+write.csv(DATOS, "datos.csv")
+q = read.csv("datos.csv")
+                                              
+head(q)
+str(q)
+names(q)
 
 
 
