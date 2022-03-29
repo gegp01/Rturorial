@@ -49,6 +49,12 @@ shapiro.test(d_poisson1)
 shapiro.test(d_poisson10)
 
 # QQ plots
+# Quantiles. Es una forma de clasificar los datos en proporciones iguales.
+
+y = quantile(masc_gaussian_sd1, probs=0:10/10), include.lowest=TRUE)
+x = quantile(rnorm(1000), probs=0:10/10), include.lowest=TRUE)
+plot(x,y)
+
 qqnorm(masc_gaussian_sd1)
 qqline(masc_gaussian_sd1)
 
