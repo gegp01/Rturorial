@@ -20,6 +20,10 @@ masc_gaussian_sd3 = rnorm(1000, 176, sd = 3)
 fem_gaussian_sd1 = rnorm(1000, 157, sd = 1)
 fem_gaussian_sd3 = rnorm(1000, 157, sd = 3)
 
+# Histograma: Gráfica de la frecuencia de los datos clasificados en intervalos del mismo tamaño.
+cubeta <- as.integer(cut(masc_gaussian_sd1, c(172:180), include.lowest=TRUE))
+barplot(table(cubeta))
+
 # Grafica Historgamas
 par(mfrow=c(2,2))
 hist(masc_gaussian_sd1, col="lightblue")
@@ -33,12 +37,19 @@ d_poisson5 = rpois(1000, 5)
 d_poisson10 = rpois(1000, 10)
 d_poisson50 = rpois(1000, 50)
 
-# Grafica Historgamas
+# Grafica Histogramas
 par(mfrow=c(2,2))
 hist(d_poisson1)
 hist(d_poisson5)
 hist(d_poisson10)
 hist(d_poisson50)
+
+
+decil <- as.integer(cut(masc_gaussian_sd1, quantile(masc_gaussian_sd1, probs=0:10/10), include.lowest=TRUE))
+barplot(table(decil))
+
+
+plot(decil, masc_gaussian_sd1)
 
 # PRUEBAS DE NORMALIDAD
 # Shapiro-wilk tests
