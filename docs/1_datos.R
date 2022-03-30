@@ -1,4 +1,7 @@
-# Con este tutorial, se espera aprender a manipular y graficar datos en R y describirlos estadisticamente.
+# Centro de Ciencias de la Complejidad, Universidad Nacional Autónoma de México.
+# Gabriel E. García Peña
+#
+# Con este tutorial, se espera enseñar a manipular y graficar datos en R, y describirlos estadisticamente.
 # En particular nos enfocaremos a cuatro temas:
 # 1. Comparar las distribuciones normal y poisson (histogramas, qqplots, y prueba de Shaphiro-Wilk.
 # 2. Tablas de Contingencia y prubas de Chi²
@@ -7,11 +10,11 @@
 ##################################
 #
 # EJEMPLO. 
-# Los hombres mexicanos miden en promedio 1.70 m de altura, sus esposas son 12 cm más bajas y miden sólo 1.57 m. En España los hombres miden 1.76 m y las mujeres 1.62 m.
+# Los hombres mexicanos miden en promedio 1.70 m de altura, sus esposas son 12 cm más bajas y miden sólo 1.57 m.
 # REF. https://www.datosmundial.com/estatura-promedio.php
 
-# 1. COMPARAR LAS DISTRIBUCIONES NORMAL Y POISSON
-# Para 1000 observaciones:
+# 1. COMPARAR LA DISTRIBUCION NORMAL DE CUATRO POBLACIONES HIPOTÉTICAS DE 1000 PERSONAS.
+
 # Generar 1000 datos al azar de una distribución normal con distinta varianza (sd) 
 masc_gaussian_sd1 = rnorm(1000, 176, sd = 1)
 masc_gaussian_sd3 = rnorm(1000, 176, sd = 3)
@@ -20,11 +23,15 @@ masc_gaussian_sd3 = rnorm(1000, 176, sd = 3)
 fem_gaussian_sd1 = rnorm(1000, 157, sd = 1)
 fem_gaussian_sd3 = rnorm(1000, 157, sd = 3)
 
-# Histograma: Gráfica de la frecuencia de los datos clasificados en intervalos del mismo tamaño.
+# Histograma: Gráfica de la frecuencia de los datos clasificados en intervalos del mismo tamaño (cubetas).
+# Clasificar los datos dentro de cubetas con el mismo intervalo del valores. 
+# En este caso hay 7 cubetas: de 172-173, 173-174, 174-175, 175-176, 176-177, 177-178, 179-180)
 cubeta <- as.integer(cut(masc_gaussian_sd1, c(172:180), include.lowest=TRUE))
+
+# Graficar las frecuencias de las cubetas, representadas en un cuadro de frecuencias (table(cubeta))
 barplot(table(cubeta))
 
-# Grafica Historgamas
+# Historgamas
 par(mfrow=c(2,2))
 hist(masc_gaussian_sd1, col="lightblue")
 hist(masc_gaussian_sd3, col="lightblue")
@@ -112,8 +119,11 @@ wave.1 <- sin(3*xs)
 wave.2 <- sin(10*xs)
 
 par(mfrow = c(1, 2))
-plot(xs,wave.1,type="l",ylim=c(-1,1)); abline(h=0,lty=3)
-plot(xs,wave.2,type="l",ylim=c(-1,1)); abline(h=0,lty=3
+plot(xs,wave.1,type="l",ylim=c(-1,1)) 
+abline(h=0,lty=3)
+                 
+plot(xs,wave.2,type="l",ylim=c(-1,1))
+abline(h=0,lty=3)
 
 wave.3 <- 0.5 * wave.1 + 0.25 * wave.2
 plot(xs,wave.3,type="l"); title("Eg complex wave"); abline(h=0,lty=3)
@@ -122,38 +132,42 @@ plot(wave.1, type="l", col="darkslategrey")
 lines(wave.2, col="grey", lty = "dashed")
 lines(wave.3, col="red")
                                                                                          
+# Encontrar picos en la onda (>0.5) y cambiarles el valor a 0.5.                                            
 wave.4 <- wave.3
-# Encontrar picos en la onda                                            
-wave.4[wave.3>0.5] <- 0.5 # acotar los datos
-plot(xs,wave.4,type="l",ylim=c(-1.25,1.25)); title("overflowed, non-linear complex wave"); abline(h=0,lty=3)                                              
-                                              
-boxplot(wave.1, wave.2, wave.3
-       , col=c("transparent", "transparent", "red")
-       , ylab = "variación", labels = c("", "", ""))
-                                                                                                               
-# 4. MANIPULACION DE DATOS
-DATOS = data.frame(masc_gaussian_sd1, masc_gaussian_sd3, masc_gaussian_sd1, masc_gaussian_sd3, d_poisson, clase_1, clase_2)
-head(DATOS)
+wave.4[wave.3>0.5] <- 0.5
+plot(xs,wave.4,type="l",ylim=c(-1.25,1.25))
+title("overflowed, non-linear complex wave")
+abline(h=0,lty=3)                                              
 
-# Seleccionar los datos con grupo = 1                                              
-DATOS[grep(1, DATOS$clase_1),]
-DATOS[DATOS$clase_1==1,]
+# Gráfica de Caja de bigote (boxplot) ¿Cuánta variación hay en cada onda (wave 1 2 y 3)? 
+boxplot(wave.1, wave.2, wave.3, col=c("transparent", "transparent", "red"), notch = T)
+title(ylab = "valores", xlab = "onda")
+
+# 4. MANIPULACION DE DATOS
+DATOS = data.frame(masc_gaussian_sd1, masc_gaussian_sd3, fem_gaussian_sd1, fem_gaussian_sd3, d_poisson1, d_poisson10, clase_1, clase_2)
+head(DATOS) # Muestra las primeras 6 filas de la base de datos
+
+# Dos formas para seleccionar los datos con clase_1 = 1                                              
+DATOS[grep(1, DATOS$clase_1),] # Forma 1) Selecciona las filas de las base de datos en los que la variable clase_1 es = 1.
+DATOS[DATOS$clase_1==1,] # Forma 2) Selecciona las filas de las base de datos en los que la variable clase_1 es = 1.
                                               
-# Resumen descriptivo                                              
+# Resumen descriptivo de los datos en los que la clase_1 es = 1 y en los que clase_1 es = 0.                                             
 summary(DATOS[DATOS$clase_1==1,])                       
 summary(DATOS[DATOS$clase_1==0,])
-par(mfrow = c(1,2))                                              
-plot(DATOS[DATOS$clase_1==1,])
-plot(DATOS[DATOS$clase_1==0,])
-                                              
-# GUARDAR LOS DATOS EN csv
-write.csv(DATOS, "datos.csv")
-q = read.csv("datos.csv")
-                                              
-head(q)
-str(q)
-names(q)
 
+# Graficas de correlación bivariada, entre todas las variables de la base de datos.                 
+par(mfrow = c(1,1))                                              
+plot(DATOS)
+                                              
+# GUARDAR LOS DATOS EN UN ARCHIVO *.csv
+write.csv(DATOS, "datos.csv")
+q = read.csv("datos.csv") # leer los archivos de nuevo y asignar el elemento q.
+
+# INSTRUCCIONES ÚTILES
+head(q) # Muestra las primeras filas de la base de datos q
+str(q) # Muestra la estructura de q.
+names(q) # Muestra los nombres de las variables en q.
+summary(q) # Da un resumen estadístico de q.
 
 
 
