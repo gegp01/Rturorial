@@ -147,43 +147,43 @@ f1 = function(path, varX, band){
   }
   
   P = id1
-  id1.x<-sapply(q= 1:length(P), f.poli)
+  id1.x<-sapply(1:length(P), f.poli)
   
   P = id2
-  id2.x<-sapply(q= 1:length(P), f.poli)
+  id2.x<-sapply(1:length(P), f.poli)
   
   P = id3
-  id3.x<-sapply(q= 1:length(P), f.poli)
+  id3.x<-sapply(1:length(P), f.poli)
   
   P = id4
-  id4.x<-sapply(q= 1:length(P), f.poli)
+  id4.x<-sapply(1:length(P), f.poli)
   
   P = id5
-  id5.x<-sapply(q= 1:length(P), f.poli)
+  id5.x<-sapply(1:length(P), f.poli)
   
   P = id6
-  id6.x<-sapply(q= 1:length(P), f.poli)
+  id6.x<-sapply(1:length(P), f.poli)
   
   P = id7
-  id7.x<-sapply(q= 1:length(P), f.poli)
+  id7.x<-sapply(1:length(P), f.poli)
   
   P = id8
-  id8.x<-sapply(q= 1:length(P), f.poli)
+  id8.x<-sapply(1:length(P), f.poli)
   
   P = id9
-  id9.x<-sapply(q= 1:length(P), f.poli)
+  id9.x<-sapply(1:length(P), f.poli)
   
   P = id10
-  id10.x<-sapply(q= 1:length(P), f.poli)
+  id10.x<-sapply(1:length(P), f.poli)
   
   P = id11
-  id11.x<-sapply(q= 1:length(P), f.poli)
+  id11.x<-sapply(1:length(P), f.poli)
   
   P = id12
-  id12.x<-sapply(q= 1:length(P), f.poli)
+  id12.x<-sapply(1:length(P), f.poli)
   
   P = id13
-  id13.x<-sapply(q= 1:length(P), f.poli)
+  id13.x<-sapply(1:length(P), f.poli)
   
   id1@data <- data.frame(id1@data
                          , id2@data[match(id1.x, id2.x),]
